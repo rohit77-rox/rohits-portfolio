@@ -88,7 +88,9 @@ ul{list-style:none}
 
 /* ══ LAYOUT ══════════════════════════════════════════ */
 .wrap{max-width:1100px;margin:0 auto;padding:0 32px;}
-.sec{padding:120px 0;}
+.sec{padding:112px 0;}
+/* Smooth section entry */
+.sec>*{transition:opacity var(--t-s) var(--ease);}
 
 /* ══ REVEAL ══════════════════════════════════════════ */
 .r{opacity:0;transform:translateY(40px);transition:opacity var(--t-s) var(--ease),transform var(--t-s) var(--ease);}
@@ -286,11 +288,13 @@ ul{list-style:none}
 
 .h-inner{
   position:relative;z-index:1;width:100%;
-  padding:calc(var(--nav-h) + 48px) 0 80px;
+  /* Stats bar is 72px tall — add bottom padding to avoid overlap */
+  padding:calc(var(--nav-h) + 56px) 0 100px;
   display:grid;
-  grid-template-columns:1fr 420px;
-  gap:60px;
+  grid-template-columns:1fr 400px;
+  gap:64px;
   align-items:center;
+  min-height:100svh;
 }
 
 /* ── Portrait column ── */
@@ -375,31 +379,53 @@ ul{list-style:none}
   to{opacity:1;transform:translateY(0) scale(1);}
 }
 
-/* Responsive */
-@media(max-width:1024px){
+/* ── Hero responsive ── */
+@media(max-width:1100px){
   .h-inner{
-    grid-template-columns:1fr 340px;
-    gap:44px;
+    grid-template-columns:1fr 360px;
+    gap:48px;
   }
-  .h-portrait{max-width:320px;}
+}
+@media(max-width:900px){
+  .h-inner{
+    grid-template-columns:1fr 300px;
+    gap:36px;
+    padding-bottom:110px;
+  }
+  .h-portrait{max-width:280px;}
 }
 @media(max-width:768px){
   .h-inner{
     grid-template-columns:1fr;
     grid-template-rows:auto auto;
+    gap:32px;
+    padding-top:calc(var(--nav-h) + 32px);
+    padding-bottom:96px;
+    text-align:center;
   }
-  .h-portrait-wrap{
-    grid-row:1;
-    margin-bottom:8px;
+  /* Portrait on top, content below */
+  .h-portrait-wrap{grid-row:1;}
+  .h-content{
+    grid-row:2;
+    align-items:center; /* center all child flex items */
   }
-  .h-content{grid-row:2;}
+  .h-label{justify-content:center;}
+  .h-tag-row{justify-content:center;}
+  .h-ctas{
+    justify-content:center;
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .h-ctas .btn{align-self:auto;}
+  .h-socials{justify-content:center;}
   .h-portrait{
-    max-width:240px;
+    max-width:220px;
     margin:0 auto;
     border-radius:18px;
     animation:portraitReveal .9s var(--ease) both;
   }
-  .h-portrait:hover{transform:scale(1.02);}
+  .h-portrait:hover{transform:translateY(-4px) scale(1.02);}
 }
 
 /* Label */
@@ -421,9 +447,9 @@ ul{list-style:none}
 /* Giant name */
 .h-name{
   font-family:var(--font-d);
-  font-size:clamp(5.5rem,15vw,11rem);
-  font-weight:700;line-height:.90;
-  letter-spacing:-.045em;color:#F0F0F0;
+  font-size:clamp(3.8rem,9vw,8.5rem);
+  font-weight:700;line-height:.92;
+  letter-spacing:-.04em;color:#F0F0F0;
   will-change:transform,opacity;
 }
 .h-name .accent{
@@ -484,25 +510,30 @@ ul{list-style:none}
   100%{transform:scaleY(0);transform-origin:bottom;opacity:0;}
 }
 
-/* Stats bar */
+/* Stats bar — fixed at bottom, 72px tall */
 .h-stats{
   position:absolute;bottom:0;left:0;right:0;
-  z-index:2;border-top:1px solid rgba(255,255,255,.06);
-  background:rgba(8,8,8,.5);backdrop-filter:blur(12px);
+  z-index:3;border-top:1px solid rgba(255,255,255,.06);
+  background:rgba(8,8,8,.65);backdrop-filter:blur(16px);
   display:grid;grid-template-columns:repeat(4,1fr);
+  height:72px;
 }
 .h-stat{
-  padding:16px 0;text-align:center;
+  height:72px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
   border-right:1px solid rgba(255,255,255,.06);
+  transition:background var(--t);
 }
 .h-stat:last-child{border-right:none;}
+.h-stat:hover{background:rgba(255,255,255,.03);}
 .h-stat-n{
   font-family:var(--font-d);
-  font-size:1.5rem;font-weight:700;
+  font-size:1.35rem;font-weight:700;
   color:var(--accent-l);letter-spacing:-.03em;
   line-height:1;
 }
-.h-stat-l{font-size:.62rem;color:rgba(255,255,255,.35);letter-spacing:.08em;margin-top:4px;}
+.h-stat-l{font-size:.58rem;color:rgba(255,255,255,.35);letter-spacing:.08em;margin-top:3px;}
 
 /* ══ ABOUT ════════════════════════════════════════════ */
 #about{background:var(--bg);}
@@ -698,7 +729,8 @@ ul{list-style:none}
 /* Content */
 .proj-content{
   display:flex;flex-direction:column;justify-content:center;
-  padding:0 56px;
+  padding:0 52px;
+  gap:0;
 }
 .proj-cat{
   font-size:.62rem;font-weight:700;letter-spacing:.18em;
@@ -964,50 +996,99 @@ footer{background:var(--bg);border-top:1px solid var(--bd);padding:28px 0;}
 #totop:hover{transform:translateY(-3px) scale(1.07);}
 
 /* ══ RESPONSIVE ═══════════════════════════════════════ */
+
+/* ── Tablet landscape (≤1024px) ── */
 @media(max-width:1024px){
-  .proj-item{grid-template-columns:1fr;}
+  .sec{padding:96px 0;}
+  /* Projects stack */
+  .proj-item{grid-template-columns:1fr;gap:0;}
   .proj-item:nth-child(even){direction:ltr;}
-  .proj-img-wrap{height:300px;}
+  .proj-img-wrap{height:320px;}
   .proj-content{padding:28px 0 0;}
-  .about-grid{grid-template-columns:1fr;gap:48px;}
+  /* About */
+  .about-grid{grid-template-columns:1fr;gap:44px;}
   .about-card{position:static;}
+  /* Contact */
   .contact-hero{grid-template-columns:1fr;gap:40px;}
 }
+
+/* ── Tablet portrait (≤900px) ── */
 @media(max-width:900px){
+  .sec{padding:80px 0;}
   .skills-grid{grid-template-columns:repeat(2,1fr);}
   .lead-grid{grid-template-columns:repeat(2,1fr);}
   .cert-grid{grid-template-columns:1fr;}
-  .h-stats{grid-template-columns:repeat(2,1fr);}
-  .sec{padding:80px 0;}
+  .h-stats{grid-template-columns:repeat(2,1fr);height:auto;}
+  .h-stat{height:64px;}
+  .proj-img-wrap{height:280px;}
 }
+
+/* ── Mobile landscape + large phones (≤720px) ── */
 @media(max-width:720px){
   .nav-links,.nav-res{display:none;}
   .hamburger{display:flex!important;}
   .sec{padding:64px 0;}
-  .h-name{font-size:clamp(3.8rem,15vw,7rem);}
-  .h-ctas{flex-direction:column;align-items:flex-start;}
-  .h-ctas .btn{align-self:flex-start;}
+  /* Hero name — controlled by hero responsive block above */
+  .h-name{font-size:clamp(2.8rem,11vw,5.5rem);}
+  /* About */
   .about-stats{grid-template-columns:1fr 1fr;}
+  /* Skills */
   .skills-grid{grid-template-columns:1fr;}
-  .edu-card{flex-direction:column;gap:14px;}
+  /* Education */
+  .edu-card{flex-direction:column;gap:12px;}
   .edu-chip{align-self:flex-start;}
+  /* Leadership */
   .lead-grid{grid-template-columns:1fr;}
-  .foot-inner{flex-direction:column;text-align:center;}
-  .foot-links{justify-content:center;flex-wrap:wrap;}
+  /* Projects */
   .proj-item{padding:44px 0;}
-}
-@media(max-width:480px){
-  .wrap{padding:0 20px;}
-  .h-name{font-size:clamp(3rem,14vw,5rem);}
-  .h-stats{grid-template-columns:repeat(2,1fr);}
-  .s-title{font-size:clamp(1.7rem,7vw,2.4rem);}
   .proj-img-wrap{height:240px;}
-  .about-stats{grid-template-columns:1fr 1fr;}
-  .contact-rhs{padding:32px 24px;}
+  /* Contact */
+  .c-item:hover{transform:none;} /* no slide on touch */
+  /* Footer */
+  .foot-inner{flex-direction:column;align-items:center;text-align:center;gap:10px;}
+  .foot-links{justify-content:center;flex-wrap:wrap;}
+  /* Timeline */
+  .tl-role{font-size:.95rem;}
 }
+
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  .wrap{padding:0 18px;}
+  .h-name{font-size:clamp(2.6rem,12vw,4.5rem);}
+  .h-stats{grid-template-columns:repeat(2,1fr);height:auto;}
+  .h-stat{height:58px;}
+  .h-stat-n{font-size:1.1rem;}
+  .s-title{font-size:clamp(1.65rem,7vw,2.2rem);}
+  .s-sub{font-size:.9rem;margin-bottom:40px;}
+  .sec{padding:56px 0;}
+  .proj-img-wrap{height:210px;}
+  .proj-title{font-size:1.4rem;}
+  .proj-content{padding:20px 0 0;}
+  .about-stats{grid-template-columns:1fr 1fr;}
+  .cert-grid{grid-template-columns:1fr;}
+  .contact-rhs{padding:28px 20px;min-height:auto;}
+  .c-big{font-size:2rem;}
+  /* Tighter section titles */
+  .eyebrow{font-size:.6rem;margin-bottom:10px;}
+  .hr{margin-bottom:32px;}
+}
+
+/* ── Small phones (≤390px) ── */
+@media(max-width:390px){
+  .h-name{font-size:clamp(2.3rem,13vw,4rem);}
+  .h-tag-row{gap:10px;}
+  .h-sep{display:none;}
+  .about-stats{grid-template-columns:1fr 1fr;}
+  .h-ctas .btn{padding:10px 16px;font-size:.8rem;}
+  .lead-grid{grid-template-columns:1fr;}
+}
+
+/* ── Very small phones (≤360px) ── */
 @media(max-width:360px){
-  .h-name{font-size:3rem;}
+  .wrap{padding:0 14px;}
+  .h-name{font-size:2.2rem;}
   .about-stats{grid-template-columns:1fr;}
+  .h-ctas{gap:8px;}
 }
 </style>
 </head>
