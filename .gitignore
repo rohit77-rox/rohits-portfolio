@@ -1,7 +1,13 @@
-# System files
+﻿# System files
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# MS Office temp files
+~$*
+
+# Word docs (not needed for portfolio)
+*.docx
 
 # Editor
 .vscode/
